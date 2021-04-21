@@ -1,27 +1,39 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import axios from "axios";
+import Router from "next/router";
 
 export default function Url() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push("https://www.google.com/");
-    }, 3000);
-    return () => clearTimeout(timer);
+  useEffect(async () => {
+    let pathname = location.pathname;
+    let appId = pathname.split("/");
+    let urlpathname = appId[1];
+    let showData = await axios.get("/api/getAllData");
+    let arraylength = showData.data.data.length;
+    console.log(arraylength);
+    for (let i = 0; i < showData.data.data.length; i++) {
+      let newshorturl = showData.data.data[i].data.shorturl;
+      console.log(newshorturl);
+      let originurl = showData.data.data[i].data.ourl;
+      console.log(showData.data.data[i].data.ourl);
+      if (newshorturl === urlpathname) {
+        Router.push(originurl);
+      }
+    }
+    setTimeout(() => {
+      Router.push("/");
+    }, 5000);
   }, []);
 
   return (
     <>
-      <h1>My Homepage</h1>
       <Image
-        src="/img.svg"
+        src="/ads.jpg"
         alt="Picture of the author"
-        width={500}
-        height={500}
+        width={1000}
+        height={1000}
       />
-      <p>Welcome to my homepage!</p>
     </>
   );
 }

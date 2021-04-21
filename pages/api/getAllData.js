@@ -9,7 +9,7 @@ export default async (req, res) => {
   if (req.method == "GET") {
     let query = await client.query(
       querydb.Map(
-        querydb.Paginate(q.Documents(q.Collection("urls"))),
+        querydb.Paginate(querydb.Documents(querydb.Collection("urls"))),
         querydb.Lambda((show) => querydb.Get(show))
       )
     );
