@@ -1,10 +1,9 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Navbar from "../components/navbar";
-import Link from "next/link";
 import Cookies from "js-cookie";
 
 export default function Home({ theshorturl, theoriginurl }) {
@@ -60,7 +59,7 @@ export default function Home({ theshorturl, theoriginurl }) {
           </div>
           {shorturl.length > 0 ? <p className="shorturl">{shorturl}</p> : null}
           <p>
-            {theoriginurl}---->{home}/{theshorturl}
+            {theoriginurl}----{home}/{theshorturl}
           </p>
         </main>
       </div>
@@ -71,8 +70,8 @@ export default function Home({ theshorturl, theoriginurl }) {
 export function getServerSideProps({ req, res }) {
   return {
     props: {
-      theshorturl: req.cookies.shorturl,
-      theoriginurl: req.cookies.originurl,
+      theshorturl: req.cookies.shorturl || "",
+      theoriginurl: req.cookies.originurl || "",
     },
   };
 }
