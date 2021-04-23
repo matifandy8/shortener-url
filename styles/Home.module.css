@@ -76,7 +76,7 @@
   word-wrap: break-word;
   color: white;
   padding: 20px;
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.411);
   margin: 10px;
 }
 
@@ -86,7 +86,7 @@
   justify-content: center;
   flex-wrap: wrap;
   max-width: 500px;
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
 .allUrlsList {

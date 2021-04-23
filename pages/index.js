@@ -7,6 +7,7 @@ import Navbar from "../components/navbar";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchurls } from "../store/actions/urlAction";
+import UseFullPageLoader from "../hooks/useFullPageLoader";
 
 export default function Home({ theshorturl, theoriginurl }) {
   const [url, setUrl] = useState("");
@@ -16,7 +17,7 @@ export default function Home({ theshorturl, theoriginurl }) {
     process.env.NODE_ENV === "development"
       ? "localhost:3000"
       : "pagina.vercel.app";
-
+  const [loader, showLoader, hideLoader] = UseFullPageLoader();
   // -------redux---------------
   const dispatch = useDispatch();
   const allurls = useSelector((state) => state.allurl);
@@ -28,12 +29,15 @@ export default function Home({ theshorturl, theoriginurl }) {
   // --------------------------
 
   const getShortUrl = async () => {
+    showLoader();
+
     setLoad(true);
     await Axios.post("/api/createUrl", {
       url: url,
     })
       .then((res) => {
         setshortUrl(`${home}/${res.data}`);
+        hideLoader();
         setLoad(false);
         Cookies.set("shorturl", res.data, { expires: 1 / 24 });
         Cookies.set("originurl", url, { expires: 1 / 24 });
@@ -73,23 +77,33 @@ export default function Home({ theshorturl, theoriginurl }) {
             {shorturl.length > 0 ? (
               <p className="shorturl">{shorturl}</p>
             ) : null}
-            <p>
-              Origin Url:<a href={theoriginurl}>{theoriginurl}</a>
-              <br />
-              <br />
-              Short Url:
-              <a>
-                {home}/{theshorturl}
-              </a>
-            </p>
+            {theoriginurl ? (
+              <p>
+                Origin Url:<a href={theoriginurl}>{theoriginurl}</a>
+                <br />
+                <br />
+                Short Url:
+                <a>
+                  {home}/{theshorturl}
+                </a>
+              </p>
+            ) : null}
             <button onClick={fetchAllUrls}>All Urls</button>
             <div className={styles.allUrlsList}>
               {urls &&
-                urls.map((url, index) => <p key={index}> {url.data.ourl}</p>)}
+                urls.map((url, index) => (
+                  <p key={index}>
+                    {url.data.ourl}
+                    <br />
+                    <br />
+                    {home}/{url.data.shorturl}
+                  </p>
+                ))}
             </div>
           </div>
         </main>
       </div>
+      {loader}
     </>
   );
 }
