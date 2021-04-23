@@ -1,5 +1,6 @@
+import store from "../store/store";
 import { Provider } from "react-redux";
-import store from "../redux/store";
+import withRedux, { createWrapper } from "next-redux-wrapper";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -10,4 +11,7 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+const makestore = () => store;
+const wrapper = createWrapper(makestore);
+
+export default wrapper.withRedux(MyApp);

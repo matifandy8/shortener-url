@@ -7,7 +7,7 @@
 }
 
 .main {
-  margin-top: 50px;
+  margin-top: 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -55,7 +55,8 @@
   font-family: "Acme", sans-serif;
   font-size: 20px;
 }
-.form button {
+.main button {
+  width: 80%;
   padding: 10px 20px;
   margin: 10px;
   border: none;
@@ -66,12 +67,44 @@
   font-size: 20px;
   cursor: pointer;
 }
-.form button:hover {
+.main button:hover {
   background: rgb(110 90 205);
 }
 
 .main p {
+  width: 70%;
+  word-wrap: break-word;
   color: white;
   padding: 20px;
   border: 1px solid white;
+  margin: 10px;
+}
+
+.urlsList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 500px;
+  margin-top: 3rem;
+}
+
+.allUrlsList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 400px;
+}
+
+@media only screen and (min-width: 767px) {
+  .form {
+    width: 650px;
+  }
+  .main p {
+    width: 90%;
+  }
+  .allUrlsList {
+    width: 650px;
+  }
 }

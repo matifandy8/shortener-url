@@ -5,6 +5,8 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Navbar from "../components/navbar";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchurls } from "../store/actions/urlAction";
 
 export default function Home({ theshorturl, theoriginurl }) {
   const [url, setUrl] = useState("");
@@ -14,6 +16,16 @@ export default function Home({ theshorturl, theoriginurl }) {
     process.env.NODE_ENV === "development"
       ? "localhost:3000"
       : "pagina.vercel.app";
+
+  // -------redux---------------
+  const dispatch = useDispatch();
+  const allurls = useSelector((state) => state.allurl);
+  const { urls } = allurls;
+  const fetchAllUrls = () => {
+    dispatch(fetchurls());
+  };
+
+  // --------------------------
 
   const getShortUrl = async () => {
     setLoad(true);
@@ -57,10 +69,25 @@ export default function Home({ theshorturl, theoriginurl }) {
               {load ? "Loading" : "Shorten"}
             </button>
           </div>
-          {shorturl.length > 0 ? <p className="shorturl">{shorturl}</p> : null}
-          <p>
-            {theoriginurl}----{home}/{theshorturl}
-          </p>
+          <div className={styles.urlsList}>
+            {shorturl.length > 0 ? (
+              <p className="shorturl">{shorturl}</p>
+            ) : null}
+            <p>
+              Origin Url:<a href={theoriginurl}>{theoriginurl}</a>
+              <br />
+              <br />
+              Short Url:
+              <a>
+                {home}/{theshorturl}
+              </a>
+            </p>
+            <button onClick={fetchAllUrls}>All Urls</button>
+            <div className={styles.allUrlsList}>
+              {urls &&
+                urls.map((url, index) => <p key={index}> {url.data.ourl}</p>)}
+            </div>
+          </div>
         </main>
       </div>
     </>
