@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
-import Image from "next/image";
 import axios from "axios";
 import Router from "next/router";
+import UseFullPageAds from "../hooks/useFullPageAds";
 
 export default function Url() {
+  const [loader, showLoader, hideLoader] = UseFullPageAds();
+
   useEffect(async () => {
+    showLoader();
     let pathname = location.pathname.split("/");
     let urlpathname = pathname[1];
     // ---- get data for api
@@ -15,6 +18,7 @@ export default function Url() {
         let newshorturl = showData.data.data[i].data.shorturl;
         let originurl = showData.data.data[i].data.ourl;
         if (newshorturl === urlpathname) {
+          hideLoader();
           Router.push(originurl);
         }
       }
@@ -24,14 +28,5 @@ export default function Url() {
     }, 10000);
   }, []);
 
-  return (
-    <>
-      <Image
-        src="/ads.jpg"
-        alt="Picture of the author"
-        width={1400}
-        height={1000}
-      />
-    </>
-  );
+  return <>{loader}</>;
 }

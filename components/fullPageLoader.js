@@ -1,6 +1,5 @@
 import React from "react";
-import styles from "../styles/FullPageLoader.module.css";
-import Image from "next/image";
+import styles from "../styles/FullPage.module.css";
 
 import Spinner from "../public/spinner.gif";
 
