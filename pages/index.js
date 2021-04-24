@@ -16,7 +16,7 @@ export default function Home({ theshorturl, theoriginurl }) {
   const home =
     process.env.NODE_ENV === "development"
       ? "localhost:3000"
-      : "shortenerUrl.vercel.app";
+      : "shortenerurl.vercel.app";
   const [loader, showLoader, hideLoader] = UseFullPageLoader();
   // -------redux---------------
   const dispatch = useDispatch();
