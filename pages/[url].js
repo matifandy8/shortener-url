@@ -26,8 +26,12 @@ export default function Url({ Data, pathurl }) {
   return <>{loader}</>;
 }
 export async function getServerSideProps(context) {
+  const home =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://shortenerurl.vercel.app";
   const pathurl = context.params;
-  const res = await fetch(`http://localhost:3000/api/getAllData`);
+  const res = await fetch(`${home}/api/getAllData`);
   const Data = await res.json();
   return {
     props: { Data, pathurl },
