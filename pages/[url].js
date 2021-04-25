@@ -1,23 +1,18 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import Router from "next/router";
 import UseFullPageAds from "../hooks/useFullPageAds";
 
-export default function Url() {
+export default function Url({ Data, pathurl }) {
   const [loader, showLoader, hideLoader] = UseFullPageAds();
 
   useEffect(async () => {
     showLoader();
-    let pathname = location.pathname.split("/");
-    let urlpathname = pathname[1];
-    // ---- get data for api
-    let showData = await axios.get("/api/getAllData");
     setTimeout(() => {
-      let arraylength = showData.data.data.length;
+      let arraylength = Data.data.length;
       for (let i = 0; i < arraylength; i++) {
-        let newshorturl = showData.data.data[i].data.shorturl;
-        let originurl = showData.data.data[i].data.ourl;
-        if (newshorturl === urlpathname) {
+        const dbshorturl = Data.data[i].data.shorturl;
+        const originurl = Data.data[i].data.ourl;
+        if (dbshorturl === pathurl.url) {
           hideLoader();
           Router.push(originurl);
         }
@@ -29,4 +24,12 @@ export default function Url() {
   }, []);
 
   return <>{loader}</>;
+}
+export async function getServerSideProps(context) {
+  const pathurl = context.params;
+  const res = await fetch(`http://localhost:3000/api/getAllData`);
+  const Data = await res.json();
+  return {
+    props: { Data, pathurl },
+  };
 }
