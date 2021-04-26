@@ -1,6 +1,6 @@
 ## Shortener Url
 Shortener Url  which makes it easy to shorten and share your short URLs.  
-Demo site on [Vercel](https://vercel.com) is **[here](https://onurl.now.sh/)**.
+Demo site on [Vercel](https://vercel.com) is **[here](shortenerurl.vercel.app)**.
 
 ### Stack
 
