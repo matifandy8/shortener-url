@@ -55,6 +55,10 @@
   font-family: "Acme", sans-serif;
   font-size: 20px;
 }
+.form div{
+  color: red;
+  font-size: 20px;
+}
 .main button {
   width: 80%;
   padding: 10px 20px;

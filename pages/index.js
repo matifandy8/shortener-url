@@ -13,6 +13,8 @@ export default function Home({ theshorturl, theoriginurl }) {
   const [url, setUrl] = useState("");
   const [shorturl, setshortUrl] = useState("");
   const [load, setLoad] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const home =
     process.env.NODE_ENV === "development"
       ? "localhost:3000"
@@ -27,9 +29,20 @@ export default function Home({ theshorturl, theoriginurl }) {
   };
 
   // --------------------------
+  function isValidURL(string) {
+    let res = string.match(
+      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+    );
+    return res !== null;
+  }
 
   const getShortUrl = async () => {
     showLoader();
+    if (!isValidURL(url)) {
+      setErrorMessage("Please enter a valid url");
+      hideLoader();
+      return;
+    }
 
     setLoad(true);
     await Axios.post("/api/createUrl", {
@@ -41,6 +54,7 @@ export default function Home({ theshorturl, theoriginurl }) {
         setLoad(false);
         Cookies.set("shorturl", res.data, { expires: 1 / 24 });
         Cookies.set("originurl", url, { expires: 1 / 24 });
+        setErrorMessage("");
       })
       .catch((e) => console.log(e));
   };
@@ -68,6 +82,7 @@ export default function Home({ theshorturl, theoriginurl }) {
               placeholder="Enter your Url"
               onChange={(e) => setUrl(e.target.value)}
             />
+            {errorMessage && <div className="error"> {errorMessage} </div>}
             <button onClick={getShortUrl}>
               {" "}
               {load ? "Loading" : "Shorten"}
